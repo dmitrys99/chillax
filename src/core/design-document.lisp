@@ -77,8 +77,8 @@ specifics on each value."
                    descendingp groupp group-level
                    reducep stalep include-docs-p
                    inclusive-end-p)
-  "Queries view named by VIEW-NAME in DESIGN-DOC-NAME. Keyword arguments correspond to CouchDB view
-query arguments."
+  "Queries view named by VIEW-NAME in DESIGN-DOC-NAME with list function LIST-NAME. 
+Keyword arguments correspond to CouchDB view query arguments."
 
   (declare (ignore key startkey startkey-docid endkey endkey-docid limit skip descendingp
                    groupp group-level reducep stalep include-docs-p inclusive-end-p))
