@@ -142,6 +142,7 @@ The CONTENT-TYPE should be a string specifying the content type for DATA."
                             (url-encode* (princ-to-string doc-id))
                             "/"
                             attachment-name)
+
                     :method :put
                     :parameters (when rev
                                   `(("rev" . ,rev)))
@@ -202,14 +203,13 @@ The CONTENT-TYPE should be a string specifying the content type for DATA."
       (:not-found (error 'document-not-found :db db :id doc-id))
       (otherwise (error 'unexpected-response :status-code status-code :response response)))))
 
-(defun copy-attachment (db doc-id attachment-name output-stream &key (max-buffer-size 4096))
+(defun copy-attachment (db doc-id attachment-name output-stream &key (buffer-size 4096))
   "Copies data from the named attachment to OUTPUT-STREAM. Returns the number of bytes copied."
   (multiple-value-bind (attachment-stream must-close-p content-length)
       (get-attachment db doc-id attachment-name)
     (unwind-protect
          (if (plusp content-length)
-             (copy-stream (flex:flexi-stream-stream attachment-stream) output-stream
-                          :buffer-size (mod content-length max-buffer-size))
+             (copy-stream (flex:flexi-stream-stream attachment-stream) output-stream :buffer-size buffer-size)
              0)
       (when must-close-p
         (close attachment-stream)))))
