@@ -77,7 +77,7 @@ specifics on each value."
                    descendingp groupp group-level
                    reducep stalep include-docs-p
                    inclusive-end-p)
-  "Queries view named by VIEW-NAME in DESIGN-DOC-NAME with list function LIST-NAME. 
+  "Queries view named by VIEW-NAME in DESIGN-DOC-NAME with list function LIST-NAME.
 Keyword arguments correspond to CouchDB view query arguments."
 
   (declare (ignore key startkey startkey-docid endkey endkey-docid limit skip descendingp
@@ -183,3 +183,10 @@ should _not_ be used in actual code."
                               :content json
                               :convert-data-p nil)
       (:ok response))))
+
+(defun query-update-function (db design-doc-name update-fn doc-id)
+  (let ((doc-name (strcat "_design/" design-doc-name "/_update/" update-fn "/" doc-id)))
+    (handle-request (response db doc-name :method :post)
+      (:ok response)
+      (:created response)
+      (:not-found (error "update-fn ~A, ~A not found" update-fn doc-id)))))

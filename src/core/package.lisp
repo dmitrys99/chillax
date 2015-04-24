@@ -50,6 +50,7 @@
    :query-view
    :query-list
    :query-temporary-view
+   :query-update-function
 
    ;;;
    ;;; Protocols
